@@ -15,7 +15,7 @@ baseurl:          /
 
 author:
   name:           'Wesley Lin'
-  url:            https://github.com/westlinkin
+  email:           westlinkin@gmail.com
 
 paginate:         5
 
