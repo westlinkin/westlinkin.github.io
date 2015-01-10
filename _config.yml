@@ -7,10 +7,10 @@ permalink:        pretty
 relative_permalinks: true
 
 # Setup
-title:            Do some Coding
+title:            Life of Coding
 # tagline:          'A Jekyll theme'
 # description:      'A brazen two-column <a href="http://jekyllrb.com" target="_blank">Jekyll</a> theme that pairs a prominent sidebar with uncomplicated content. Made by <a href="https://twitter.com/mdo" target="_blank">@mdo</a>.'
-url:              http://westlinkin.github.io
+url:              http://lifeOfCoding.com
 baseurl:          /
 
 author:
