@@ -5,7 +5,7 @@ title: How to increase Android Studio memory limit in Mac
 
 The [technical doc](http://tools.android.com/tech-docs/configuration) of configuring Android Studio on the Android Tools Project site is out dated. So you can not increase memory limit by configuring the `studio.vmoptions` file under `~/Library/Preferences/AndroidStudio/` folder. Actually, in my case, there is no `studio.vmoptions` or `idea.properties` file like the doc said.
 
-### Locate the configuration 
+### Locate the configuration file
 
 If you are using `Terminal`, run command
 

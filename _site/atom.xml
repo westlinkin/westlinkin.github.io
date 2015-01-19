@@ -4,7 +4,7 @@
  <title>Life of Coding</title>
  <link href="http://lifeOfCoding.com/atom.xml" rel="self"/>
  <link href="http://lifeOfCoding.com/"/>
- <updated>2015-01-19T11:19:05+08:00</updated>
+ <updated>2015-01-19T11:28:18+08:00</updated>
  <id>http://lifeOfCoding.com</id>
  <author>
    <name>Wesley Lin</name>
@@ -19,7 +19,7 @@
    <id>http://lifeOfCoding.com/2015/01/19/How-to-increase-Android-studio-memory-limit-in-Mac</id>
    <content type="html">&lt;p&gt;The &lt;a href=&quot;http://tools.android.com/tech-docs/configuration&quot;&gt;technical doc&lt;/a&gt; of configuring Android Studio on the Android Tools Project site is out dated. So you can not increase memory limit by configuring the &lt;code&gt;studio.vmoptions&lt;/code&gt; file under &lt;code&gt;~/Library/Preferences/AndroidStudio/&lt;/code&gt; folder. Actually, in my case, there is no &lt;code&gt;studio.vmoptions&lt;/code&gt; or &lt;code&gt;idea.properties&lt;/code&gt; file like the doc said.&lt;/p&gt;
 
-&lt;h3&gt;Locate the configuration&lt;/h3&gt;
+&lt;h3&gt;Locate the configuration file&lt;/h3&gt;
 
 &lt;p&gt;If you are using &lt;code&gt;Terminal&lt;/code&gt;, run command&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;open -e /Applications/Android\ Studio.app/Contents/bin/studio.vmoptions
