@@ -4,7 +4,7 @@
  <title>Life of Coding</title>
  <link href="http://lifeOfCoding.com/atom.xml" rel="self"/>
  <link href="http://lifeOfCoding.com/"/>
- <updated>2015-04-06T22:54:10+08:00</updated>
+ <updated>2015-04-06T23:01:34+08:00</updated>
  <id>http://lifeOfCoding.com</id>
  <author>
    <name>Wesley Lin</name>
@@ -26,11 +26,7 @@
 &lt;p&gt;Secondly, WebView is UI related. A WebView should be created in UI thread. Sure, you can create it in UI thread, load JavaScript code in a background thread, then pass the result back to UI thread. It&amp;#39;s workable, but it&amp;#39;s not safe.&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;blockquote&gt;
-&lt;blockquote&gt;
-&lt;p&gt;If you call methods on WebView from any thread other than your app&amp;#39;s UI thread, it can cause unexpected results. &lt;a href=&quot;https://developer.android.com/guide/webapps/migrating.html#Threads&quot;&gt;source&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;If you call methods on WebView from any thread other than your app&amp;#39;s UI thread, it can cause unexpected results. [&lt;a href=&quot;https://developer.android.com/guide/webapps/migrating.html#Threads&quot;&gt;source&lt;/a&gt;]&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Last but not least, WebView is fragmented. After Android 4.4(API level 19), Android is using WebView baseed on &lt;a href=&quot;http://www.chromium.org/Home&quot;&gt;Chromuim&lt;/a&gt;. Although this is toally a good thing, the WebView in Android 4.3 and below suffers the old version. You should code two version of WebView related code to just make it work. A lot of code should be re-write according to &lt;a href=&quot;https://developer.android.com/guide/webapps/migrating.html&quot;&gt;this article&lt;/a&gt;.&lt;/p&gt;
@@ -39,44 +35,43 @@
 
 &lt;h3&gt;How to use Rhino&lt;/h3&gt;
 
-&lt;p&gt;Rhino is a open source project, you can get the source code using this command
-&lt;code&gt;
-git clone https://github.com/mozilla/rhino.git
-&lt;/code&gt;
-Or fork their project on &lt;a href=&quot;https://github.com/mozilla/rhino&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Rhino is a open source project, you can get the source code using this command:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;git clone https://github.com/mozilla/rhino.git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Or fork their project on &lt;a href=&quot;https://github.com/mozilla/rhino&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Of course, you don&amp;#39;t have to get the source code. If you want to use it in your Android project. &lt;a href=&quot;https://github.com/mozilla/rhino/releases/download/Rhino1_7R5_RELEASE/rhino1_7R5.zip&quot;&gt;Download Rhino&lt;/a&gt; first, unzip it, put the &lt;code&gt;js.jar&lt;/code&gt; file under &lt;code&gt;libs&lt;/code&gt; folder. It is very small, so you don&amp;#39;t need to worry your apk file will be ridiculously large because of this one external jar.&lt;/p&gt;
 
 &lt;p&gt;Here is some simple code to execute JavaScript code.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Object[] params = new Object[] { &amp;quot;javaScriptParam&amp;quot; };
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;n&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;javaScriptParam&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;};&lt;/span&gt;
 
-// Every Rhino VM begins with the enter()
-// This Context is not Android&amp;#39;s Context
-Context rhino = Context.enter();
+&lt;span class=&quot;c1&quot;&gt;// Every Rhino VM begins with the enter()&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// This Context is not Android&amp;#39;s Context&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rhino&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;enter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
 
-// Turn off optimization to make Rhino Android compatible
-rhino.setOptimizationLevel(-1);
-try {
-    Scriptable scope = rhino.initStandardObjects();
+&lt;span class=&quot;c1&quot;&gt;// Turn off optimization to make Rhino Android compatible&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;rhino&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setOptimizationLevel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Scriptable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rhino&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;initStandardObjects&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
 
-    // Note the forth argument is 1, which means the JavaScript source has
-    // been compressed to only one line using something like YUI
-    rhino.evaluateString(scope, javaScriptCode, &amp;quot;JavaScript&amp;quot;, 1, null);
+    &lt;span class=&quot;c1&quot;&gt;// Note the forth argument is 1, which means the JavaScript source has&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// been compressed to only one line using something like YUI&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;rhino&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;evaluateString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;javaScriptCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;JavaScript&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
 
-    // Get the functionName defined in JavaScriptCode
-    Object obj = scope.get(functionNameInJavaScriptCode, scope);
+    &lt;span class=&quot;c1&quot;&gt;// Get the functionName defined in JavaScriptCode&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;functionNameInJavaScriptCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
 
-    if (obj instanceof Function) {
-        Function jsFunction = (Function) obj;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;instanceof&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jsFunction&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;obj&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 
-        // Call the function with params
-        Object jsResult = jsFunction.call(rhino, scope, scope, params);
-        // Parse the jsResult object to a String
-        String result = Context.toString(jsResult);
-    }
-} finally {
-    Context.exit();
-}
+        &lt;span class=&quot;c1&quot;&gt;// Call the function with params&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jsResult&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jsFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhino&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// Parse the jsResult object to a String&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jsResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;finally&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;As you can see, it is quite easy. You can dig up more in &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Rhino_documentation&quot;&gt;Rhino document&lt;/a&gt;.&lt;/p&gt;
 
@@ -86,8 +81,7 @@ try {
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;-keep class org.mozilla.javascript.** { *; }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;When you run the &lt;code&gt;assembleRelease&lt;/code&gt; task, with &lt;code&gt;minifyEnabled true&lt;/code&gt; of course, you still can see a lot of warning like these:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Warning: org.mozilla.javascript.tools.shell.JSConsole: can&amp;#39;t find referenced class javax.swing.JMenu
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Warning: org.mozilla.javascript.tools.shell.JSConsole: can&amp;#39;t find referenced class javax.swing.JMenu
 Warning: org.mozilla.javascript.tools.shell.JSConsole: can&amp;#39;t find referenced class javax.swing.JMenu
 Warning: org.mozilla.javascript.tools.shell.JSConsole: can&amp;#39;t find referenced class javax.swing.JMenu
 Warning: org.mozilla.javascript.tools.shell.JSConsole: can&amp;#39;t find referenced class javax.swing.ButtonGroup
@@ -95,17 +89,14 @@ Warning: org.mozilla.javascript.tools.shell.JSConsole: can&amp;#39;t find refere
 Warning: org.mozilla.javascript.tools.shell.JSConsole: can&amp;#39;t find referenced class java.awt.event.ActionEvent
 Warning: org.mozilla.javascript.tools.shell.JSConsole: can&amp;#39;t find referenced class java.awt.event.ActionEvent
 Warning: org.mozilla.javascript.tools.shell.JSConsole$1: can&amp;#39;t find referenced class javax.swing.filechooser.FileFilter
-Warning: org.mozilla.javascript.tools.shell.JSConsole$1: can&amp;#39;t find referenced class javax.swing.filechooser.FileFilter
-Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can&amp;#39;t find referenced class java.awt.event.WindowAdapter
 Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can&amp;#39;t find referenced class java.awt.event.WindowAdapter
 Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can&amp;#39;t find referenced class java.awt.event.WindowEvent
 Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can&amp;#39;t find referenced class java.awt.event.WindowEvent
 Warning: org.mozilla.javascript.xml.impl.xmlbeans.LogicalEquality: can&amp;#39;t find referenced class org.apache.xmlbeans.XmlCursor
 Warning: org.mozilla.javascript.xml.impl.xmlbeans.LogicalEquality: can&amp;#39;t find referenced class org.apache.xmlbeans.XmlCursor
 Warning: org.mozilla.javascript.xml.impl.xmlbeans.LogicalEquality: can&amp;#39;t find referenced class org.apache.xmlbeans.XmlCursor
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Luckily, evan with these warnings, the app runs fine. You can ignore them(that&amp;#39;s what I do), or adding this line inot your `&lt;code&gt;proguard-android.txt&lt;/code&gt; file.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Luckily, evan with these warnings, the app runs fine. You can ignore them(that&amp;#39;s what I do), or adding this line inot your &lt;code&gt;proguard-android.txt&lt;/code&gt; file.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;-dontwarn org.mozilla.javascript.**
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
  </entry>

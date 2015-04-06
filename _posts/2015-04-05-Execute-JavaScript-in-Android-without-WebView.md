@@ -16,7 +16,7 @@ First of all, WebView is heavy. WebView is slow, especially in a large/huge proj
 
 Secondly, WebView is UI related. A WebView should be created in UI thread. Sure, you can create it in UI thread, load JavaScript code in a background thread, then pass the result back to UI thread. It's workable, but it's not safe.
 
->>> If you call methods on WebView from any thread other than your app's UI thread, it can cause unexpected results. [source](https://developer.android.com/guide/webapps/migrating.html#Threads)
+> If you call methods on WebView from any thread other than your app's UI thread, it can cause unexpected results. [[source](https://developer.android.com/guide/webapps/migrating.html#Threads)]
 
 Last but not least, WebView is fragmented. After Android 4.4(API level 19), Android is using WebView baseed on [Chromuim](http://www.chromium.org/Home). Although this is toally a good thing, the WebView in Android 4.3 and below suffers the old version. You should code two version of WebView related code to just make it work. A lot of code should be re-write according to [this article](https://developer.android.com/guide/webapps/migrating.html).
 
@@ -25,17 +25,19 @@ Luckily, the good people in Mozilla make a project called `Rhino`. It is typical
 
 ### How to use Rhino
 
-Rhino is a open source project, you can get the source code using this command
+Rhino is a open source project, you can get the source code using this command:
+
 ```
 git clone https://github.com/mozilla/rhino.git
 ```
+
 Or fork their project on [GitHub](https://github.com/mozilla/rhino).
 
 Of course, you don't have to get the source code. If you want to use it in your Android project. [Download Rhino](https://github.com/mozilla/rhino/releases/download/Rhino1_7R5_RELEASE/rhino1_7R5.zip) first, unzip it, put the `js.jar` file under `libs` folder. It is very small, so you don't need to worry your apk file will be ridiculously large because of this one external jar.
 
 Here is some simple code to execute JavaScript code.
 
-```
+```java
 Object[] params = new Object[] { "javaScriptParam" };
 
 // Every Rhino VM begins with the enter()
@@ -81,7 +83,8 @@ You can set up Rhino's proguard setting by adding this following line into your 
 
 When you run the `assembleRelease` task, with `minifyEnabled true` of course, you still can see a lot of warning like these:
 
-```Warning: org.mozilla.javascript.tools.shell.JSConsole: can't find referenced class javax.swing.JMenu
+```
+Warning: org.mozilla.javascript.tools.shell.JSConsole: can't find referenced class javax.swing.JMenu
 Warning: org.mozilla.javascript.tools.shell.JSConsole: can't find referenced class javax.swing.JMenu
 Warning: org.mozilla.javascript.tools.shell.JSConsole: can't find referenced class javax.swing.JMenu
 Warning: org.mozilla.javascript.tools.shell.JSConsole: can't find referenced class javax.swing.ButtonGroup
@@ -89,8 +92,6 @@ Warning: org.mozilla.javascript.tools.shell.JSConsole: can't find referenced cla
 Warning: org.mozilla.javascript.tools.shell.JSConsole: can't find referenced class java.awt.event.ActionEvent
 Warning: org.mozilla.javascript.tools.shell.JSConsole: can't find referenced class java.awt.event.ActionEvent
 Warning: org.mozilla.javascript.tools.shell.JSConsole$1: can't find referenced class javax.swing.filechooser.FileFilter
-Warning: org.mozilla.javascript.tools.shell.JSConsole$1: can't find referenced class javax.swing.filechooser.FileFilter
-Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can't find referenced class java.awt.event.WindowAdapter
 Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can't find referenced class java.awt.event.WindowAdapter
 Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can't find referenced class java.awt.event.WindowEvent
 Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can't find referenced class java.awt.event.WindowEvent
@@ -99,7 +100,7 @@ Warning: org.mozilla.javascript.xml.impl.xmlbeans.LogicalEquality: can't find re
 Warning: org.mozilla.javascript.xml.impl.xmlbeans.LogicalEquality: can't find referenced class org.apache.xmlbeans.XmlCursor
 ```
 
-Luckily, evan with these warnings, the app runs fine. You can ignore them(that's what I do), or adding this line inot your ``proguard-android.txt` file.
+Luckily, evan with these warnings, the app runs fine. You can ignore them(that's what I do), or adding this line inot your `proguard-android.txt` file.
 
 ```
 -dontwarn org.mozilla.javascript.**
