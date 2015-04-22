@@ -4,13 +4,53 @@
  <title>Life of Coding</title>
  <link href="http://lifeOfCoding.com/atom.xml" rel="self"/>
  <link href="http://lifeOfCoding.com/"/>
- <updated>2015-04-06T23:01:34+08:00</updated>
+ <updated>2015-04-22T17:03:16+08:00</updated>
  <id>http://lifeOfCoding.com</id>
  <author>
    <name>Wesley Lin</name>
    <email>westlinkin@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Change Android studio Logcat text color to Eclipse style</title>
+   <link href="http://lifeOfCoding.com/2015/04/22/Change-Android-studio-Logcat-text-color-to-Eclipse-style/"/>
+   <updated>2015-04-22T00:00:00+08:00</updated>
+   <id>http://lifeOfCoding.com/2015/04/22/Change-Android-studio-Logcat-text-color-to-Eclipse-style</id>
+   <content type="html">&lt;p&gt;Android studio is better than Eclipse with ADT in almost every way. I&amp;#39;ve been using it for almost a year now. However, Logcat is an exception. Only &lt;code&gt;Assert&lt;/code&gt;, &lt;code&gt;Error&lt;/code&gt; and &lt;code&gt;Warn&lt;/code&gt; log level&amp;#39;s text has different color, which makes it very dificult to distinguish between &lt;code&gt;Info&lt;/code&gt;, &lt;code&gt;Debug&lt;/code&gt; and &lt;code&gt;Verbose&lt;/code&gt; log level. And I believe these three log levels are mostly common used by app developers (including me of course).&lt;/p&gt;
+
+&lt;h3&gt;Locate Logcat Settings&lt;/h3&gt;
+
+&lt;p&gt;Open Android Studio preferences (press &lt;code&gt;cmd + ,&lt;/code&gt; if on OSX), you can find Android Logcat settings in &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Editor ==&amp;gt; Colors &amp;amp; Fonts ==&amp;gt; Android Logcat
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Click &lt;code&gt;Save As...&lt;/code&gt; button to save the current scheme, name it.&lt;/p&gt;
+
+&lt;p&gt;Uncheck the &lt;code&gt;Use inherited attributes&lt;/code&gt; checkbox, in order to change the text style.&lt;/p&gt;
+
+&lt;h3&gt;Find Eclipse Logcat style&lt;/h3&gt;
+
+&lt;p&gt;You can find the Eclipse Logcat color setting in the follow foottrace in preferences:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Android ==&amp;gt; LogCat ==&amp;gt; Colors
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In case you have already deleted Eclipse or didn&amp;#39;t bother to open it, here is the RGB color of each log levels:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Verbose:  000000
+Debug: 00007F
+Info: 027F00
+Warn: FF7F00
+Error: FF0000
+Assert: FF0000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Others&lt;/h3&gt;
+
+&lt;p&gt;I use the Android studio default &lt;code&gt;Assert&lt;/code&gt; color to make it different from &lt;code&gt;Error&lt;/code&gt; log level.&lt;/p&gt;
+
+&lt;p&gt;I use the Android studio default theme, not &lt;code&gt;Darcular&lt;/code&gt;, so the Eclipse logcat style works for me. If you are using the dark &lt;code&gt;Darcular&lt;/code&gt; theme, there is already &lt;a href=&quot;https://plus.google.com/+CyrilMottier/posts/Q6cZdf57cj7&quot;&gt;a good color set&lt;/a&gt; for it.&lt;/p&gt;
+
+&lt;p&gt;Finnaly, here is the colorful logcat:
+&lt;img src=&quot;/images/android-studio-logcat.png&quot; alt=&quot;img&quot;&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Execute JavaScript in Android without WebView</title>
