@@ -1,10 +1,11 @@
 ---
 layout: page
 title: About
+permalink: "about.html"
 ---
 
 
-Hi, My name is Wesley Lin. I am an Android developer in Shanghai, China. In this blog, you can find some tricks and tips in app development, some problems I had during the developing process and some solutions I came up with.
+Hi, My name is Wesley Lin. I am an Android and iOS developer in Shanghai, China. In this blog, you can find some tricks and tips in app development, some problems I had during the developing process and some solutions I came up with.
 
 Feel free to contact me via:
 
