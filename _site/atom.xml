@@ -4,13 +4,81 @@
  <title>Life of Coding</title>
  <link href="http://lifeOfCoding.com/atom.xml" rel="self"/>
  <link href="http://lifeOfCoding.com/"/>
- <updated>2015-08-05T11:55:07+08:00</updated>
+ <updated>2015-08-07T13:39:46+08:00</updated>
  <id>http://lifeOfCoding.com</id>
  <author>
    <name>Wesley Lin</name>
    <email>westlinkin@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Why I prefer AppCode over Xcode</title>
+   <link href="http://lifeOfCoding.com/2015/08/07/Why-I-prefer-AppCode-over-Xcode/"/>
+   <updated>2015-08-07T00:00:00+08:00</updated>
+   <id>http://lifeOfCoding.com/2015/08/07/Why-I-prefer-AppCode-over-Xcode</id>
+   <content type="html">&lt;p&gt;For the past four months, I&amp;#39;ve been learning iOS development. Basically I just read a &lt;a href=&quot;http://www.amazon.com/Beginning-iPhone-Development-Exploring-iOS-ebook/dp/B00M4FC7O6/ref=mt_kindle?_encoding=UTF8&amp;amp;me=&quot;&gt;book&lt;/a&gt;, and then started writing code. I haven&amp;#39;t started &lt;code&gt;Swift&lt;/code&gt; language yet, for most iOS open-source libraries are written in &lt;code&gt;Objective-C&lt;/code&gt;. And I think I won&amp;#39;t start using &lt;code&gt;Swift&lt;/code&gt; in another one or two years.&lt;/p&gt;
+
+&lt;p&gt;As an Android developer, I am used to &lt;code&gt;Android Studio&lt;/code&gt;, which is a fantastic IDE for coding. For those Android developers who havn&amp;#39;t using &lt;code&gt;Android Studio&lt;/code&gt;yet, I strongly recommend you try it. &lt;/p&gt;
+
+&lt;p&gt;When I started using &lt;code&gt;Xcode&lt;/code&gt; for iOS development, I am very confused.&lt;/p&gt;
+
+&lt;h3&gt;What is wrong with Xcode&lt;/h3&gt;
+
+&lt;h5&gt;I accidentally close projects all the time.&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;cmd + w&lt;/code&gt; is a common shortcut for close a tab or window on OSX. If you&amp;#39;re using &lt;code&gt;Safari&lt;/code&gt; or &lt;code&gt;Chrome&lt;/code&gt;, you know what I mean. If there are more than one tab in your brower when you use &lt;code&gt;cmd + w&lt;/code&gt;, it close the focused tab. If there is no tab left, it close the window. It&amp;#39;s quite easy to understand, right? But NOOOO, &lt;code&gt;Xcode&lt;/code&gt; doesn&amp;#39;t behave like that. If you use &lt;code&gt;cmd + w&lt;/code&gt;, it close the whole project.&lt;/p&gt;
+
+&lt;h5&gt;Delete a whole line? NO!&lt;/h5&gt;
+
+&lt;p&gt;You can&amp;#39;t use &lt;code&gt;cmd + delete&lt;/code&gt; to delete a whole line, which is also a common shortcut on OSX. Yes, you can delete a whole line of code using &lt;code&gt;cmd + delete&lt;/code&gt;, but if there is just an extra line and you wanna to delete it? &lt;code&gt;cmd + delete&lt;/code&gt; will delete the line and delete half the line above it.&lt;/p&gt;
+
+&lt;h5&gt;Code completion sucks&lt;/h5&gt;
+
+&lt;p&gt;If you wanna use a certain method in a &lt;code&gt;NSObject&lt;/code&gt;, which has a word &lt;code&gt;index&lt;/code&gt; in it, but you can&amp;#39;t remenber the whole name of the method, what will you do? Look up the document or source code to get the exact name or the first letter of the method? Because &lt;code&gt;Xcode&lt;/code&gt; can only auto-complete code from the beginning. For example, if you type in &lt;code&gt;[Object index&lt;/code&gt;, the IDE won&amp;#39;t tell you all the methods related to &lt;code&gt;index&lt;/code&gt; keyword, it can only tell you the methods started with &lt;code&gt;index&lt;/code&gt;. This really makes writing code slower.&lt;/p&gt;
+
+&lt;h5&gt;NO Auto-import&lt;/h5&gt;
+
+&lt;p&gt;Why not? Evan &lt;code&gt;Eclipse&lt;/code&gt; has this feature a long long time ago. I can&amp;#39;t stand that when I am writing a method/function, the IDE tells me:&amp;quot; Oh, I can&amp;#39;t recognize this. Oh, you can&amp;#39;t use that&amp;quot;.&lt;/p&gt;
+
+&lt;h5&gt;Can you really see the Log?&lt;/h5&gt;
+
+&lt;p&gt;The font and line spacing of the Log console is a disaster. The text is bold and line spacing is way too small. So the log just looks like a black block. I can&amp;#39;t really distinguish one log from another.&lt;/p&gt;
+
+&lt;h5&gt;CocoaPods&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;CocoaPods&lt;/code&gt; is a dependency manager for iOS development, like &lt;code&gt;gradle&lt;/code&gt; or &lt;code&gt;maven&lt;/code&gt; for Android and Java. To use &lt;code&gt;CocoaPods&lt;/code&gt; in your project, you can follow the steps on the &lt;a href=&quot;https://cocoapods.org/&quot;&gt;CocoaPods website&lt;/a&gt;. This is not convenient enough! Becuase you need to use the terminal, which &lt;code&gt;Xcode&lt;/code&gt; do not provide a shortcut to open and relocate to the project folder. You will have to open a terminal, then go to the project folder, or go to the project folder in finder and open a terminal there. Finally you need to run a command line to install the dependencies. Why all the trouble? &lt;code&gt;AppCode&lt;/code&gt; can do all that for you, all you need to do is editing the &lt;code&gt;Podfile&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3&gt;AppCode is better&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;AppCode&lt;/code&gt; fixes all the complaints I have about &lt;code&gt;Xcode&lt;/code&gt;, plus I can use all the keymap I am already familiar with in &lt;code&gt;Android Studio&lt;/code&gt;. Just export the keymap settings in &lt;code&gt;Android Studio&lt;/code&gt; and import it in &lt;code&gt;AppCode&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;You can find out many other better feature of &lt;code&gt;AppCode&lt;/code&gt; on the &lt;a href=&quot;https://www.jetbrains.com/objc/features/&quot;&gt;official website&lt;/a&gt;. I am sure there are a lot to explore. You can find some tricks and tips on the &lt;a href=&quot;http://blog.jetbrains.com/objc/&quot;&gt;AppCode Blog&lt;/a&gt;. This IDE truely makes my life a lot easier.&lt;/p&gt;
+
+&lt;h3&gt;Flaws in AppCode&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;AppCode&lt;/code&gt; is not perfect, though. When it comes to edit &lt;code&gt;xib&lt;/code&gt; or &lt;code&gt;storyboard&lt;/code&gt; file, it is crappy. And &lt;code&gt;AppCode&lt;/code&gt; sure cannot submit apps to the AppStore. It&amp;#39;s also not that good when editing the project settings.&lt;/p&gt;
+
+&lt;p&gt;Now my workflow of a new project is this: &lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create new project using &lt;code&gt;Xcode&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Config &lt;code&gt;CocoaPods&lt;/code&gt; in &lt;code&gt;AppCode&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Edit &lt;code&gt;xib&lt;/code&gt; and &lt;code&gt;storyboard&lt;/code&gt; in &lt;code&gt;Xcode&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Write &lt;code&gt;Objective-C&lt;/code&gt; code in &lt;code&gt;AppCode&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Config project in &lt;code&gt;Xcode&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Submit to beta test or AppStore in &lt;code&gt;Xcode&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Because &lt;code&gt;AppCode&lt;/code&gt; can sync code and files instantly with &lt;code&gt;Xcode&lt;/code&gt;, you don&amp;#39;t need to worry about conflicts when editing the same project/file using two IDEs.&lt;/p&gt;
+
+&lt;h3&gt;Others&lt;/h3&gt;
+
+&lt;p&gt;I don&amp;#39;t mean starting an argument about which IDE is better. It&amp;#39;s just, to me, &lt;code&gt;Xcode&lt;/code&gt; is not good enough. I can be more efficient and focused when using &lt;code&gt;AppCode&lt;/code&gt;, that&amp;#39;s what really matters.&lt;/p&gt;
+
+&lt;p&gt;If you are always an &lt;code&gt;Xcode&lt;/code&gt; user, you can try a &lt;a href=&quot;https://www.jetbrains.com/objc/download/&quot;&gt;30-day trial&lt;/a&gt; of &lt;code&gt;AppCode&lt;/code&gt;, I mean, it doesn&amp;#39;t hurt, does it? If you don&amp;#39;t like, leave it there, delete it, do whatever you want with it. But if you like it, you will find out it really is an productivity tool. After all, IDE should make coder efficiency, right?&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Change Android studio Logcat text color to Eclipse style</title>

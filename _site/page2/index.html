@@ -80,6 +80,10 @@
           
         
       
+        
+          
+        
+      
 
     <a class="sidebar-nav-item" href="/atom.xml">RSS</a>
 
@@ -95,95 +99,46 @@
   
   <div class="post">
     <h1 class="post-title">
-      <a href="/2015/04/05/Execute-JavaScript-in-Android-without-WebView/">
-        Execute JavaScript in Android without WebView
+      <a href="/2015/04/22/Change-Android-studio-Logcat-text-color-to-Eclipse-style/">
+        Change Android studio Logcat text color to Eclipse style
       </a>
     </h1>
 
-    <span class="post-date">05 Apr 2015</span>
+    <span class="post-date">22 Apr 2015</span>
 
-    <p>For some reason, I need to execute JavaScript code in an Android project. Because the JavaScript code was running in a background thread(in <code>doInBackground</code> part in an <a href="http://developer.android.com/reference/android/os/AsyncTask.html"><code>AsyncTask</code></a>), I don&#39;t want to use <code>WebView</code>.</p>
+    <p>Android studio is better than Eclipse with ADT in almost every way. I&#39;ve been using it for almost a year now. However, Logcat is an exception. Only <code>Assert</code>, <code>Error</code> and <code>Warn</code> log level&#39;s text has different color, which makes it very dificult to distinguish between <code>Info</code>, <code>Debug</code> and <code>Verbose</code> log level. And I believe these three log levels are mostly common used by app developers (including me of course).</p>
 
-<h3>Why not WebView</h3>
+<h3>Locate Logcat Settings</h3>
 
-<p>First of all, WebView is heavy. WebView is slow, especially in a large/huge project. Plus, you need to add a lot of WebView related settings to just execute one code snippet. It&#39;s just simply not worth it.</p>
-
-<p>Secondly, WebView is UI related. A WebView should be created in UI thread. Sure, you can create it in UI thread, load JavaScript code in a background thread, then pass the result back to UI thread. It&#39;s workable, but it&#39;s not safe.</p>
-
-<blockquote>
-<p>If you call methods on WebView from any thread other than your app&#39;s UI thread, it can cause unexpected results. [<a href="https://developer.android.com/guide/webapps/migrating.html#Threads">source</a>]</p>
-</blockquote>
-
-<p>Last but not least, WebView is fragmented. After Android 4.4(API level 19), Android is using WebView baseed on <a href="http://www.chromium.org/Home">Chromuim</a>. Although this is toally a good thing, the WebView in Android 4.3 and below suffers the old version. You should code two version of WebView related code to just make it work. A lot of code should be re-write according to <a href="https://developer.android.com/guide/webapps/migrating.html">this article</a>.</p>
-
-<p>Luckily, the good people in Mozilla make a project called <code>Rhino</code>. It is typically embedded into Java applications to provide scripting to end users.</p>
-
-<h3>How to use Rhino</h3>
-
-<p>Rhino is a open source project, you can get the source code using this command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">git clone https://github.com/mozilla/rhino.git
+<p>Open Android Studio preferences (press <code>cmd + ,</code> if on OSX), you can find Android Logcat settings in </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Editor ==&gt; Colors &amp; Fonts ==&gt; Android Logcat
 </code></pre></div>
-<p>Or fork their project on <a href="https://github.com/mozilla/rhino">GitHub</a>.</p>
+<p>Click <code>Save As...</code> button to save the current scheme, name it.</p>
 
-<p>Of course, you don&#39;t have to get the source code. If you want to use it in your Android project. <a href="https://github.com/mozilla/rhino/releases/download/Rhino1_7R5_RELEASE/rhino1_7R5.zip">Download Rhino</a> first, unzip it, put the <code>js.jar</code> file under <code>libs</code> folder. It is very small, so you don&#39;t need to worry your apk file will be ridiculously large because of this one external jar.</p>
+<p>Uncheck the <code>Use inherited attributes</code> checkbox, in order to change the text style.</p>
 
-<p>Here is some simple code to execute JavaScript code.</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">Object</span><span class="o">[]</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[]</span> <span class="o">{</span> <span class="s">&quot;javaScriptParam&quot;</span> <span class="o">};</span>
+<h3>Find Eclipse Logcat style</h3>
 
-<span class="c1">// Every Rhino VM begins with the enter()</span>
-<span class="c1">// This Context is not Android&#39;s Context</span>
-<span class="n">Context</span> <span class="n">rhino</span> <span class="o">=</span> <span class="n">Context</span><span class="o">.</span><span class="na">enter</span><span class="o">();</span>
-
-<span class="c1">// Turn off optimization to make Rhino Android compatible</span>
-<span class="n">rhino</span><span class="o">.</span><span class="na">setOptimizationLevel</span><span class="o">(-</span><span class="mi">1</span><span class="o">);</span>
-<span class="k">try</span> <span class="o">{</span>
-    <span class="n">Scriptable</span> <span class="n">scope</span> <span class="o">=</span> <span class="n">rhino</span><span class="o">.</span><span class="na">initStandardObjects</span><span class="o">();</span>
-
-    <span class="c1">// Note the forth argument is 1, which means the JavaScript source has</span>
-    <span class="c1">// been compressed to only one line using something like YUI</span>
-    <span class="n">rhino</span><span class="o">.</span><span class="na">evaluateString</span><span class="o">(</span><span class="n">scope</span><span class="o">,</span> <span class="n">javaScriptCode</span><span class="o">,</span> <span class="s">&quot;JavaScript&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
-
-    <span class="c1">// Get the functionName defined in JavaScriptCode</span>
-    <span class="n">Object</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">scope</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">functionNameInJavaScriptCode</span><span class="o">,</span> <span class="n">scope</span><span class="o">);</span>
-
-    <span class="k">if</span> <span class="o">(</span><span class="n">obj</span> <span class="k">instanceof</span> <span class="n">Function</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">Function</span> <span class="n">jsFunction</span> <span class="o">=</span> <span class="o">(</span><span class="n">Function</span><span class="o">)</span> <span class="n">obj</span><span class="o">;</span>
-
-        <span class="c1">// Call the function with params</span>
-        <span class="n">Object</span> <span class="n">jsResult</span> <span class="o">=</span> <span class="n">jsFunction</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">rhino</span><span class="o">,</span> <span class="n">scope</span><span class="o">,</span> <span class="n">scope</span><span class="o">,</span> <span class="n">params</span><span class="o">);</span>
-        <span class="c1">// Parse the jsResult object to a String</span>
-        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">Context</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">jsResult</span><span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-    <span class="n">Context</span><span class="o">.</span><span class="na">exit</span><span class="o">();</span>
-<span class="o">}</span>
+<p>You can find the Eclipse Logcat color setting in the follow foottrace in preferences:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Android ==&gt; LogCat ==&gt; Colors
 </code></pre></div>
-<p>As you can see, it is quite easy. You can dig up more in <a href="https://developer.mozilla.org/en-US/docs/Rhino_documentation">Rhino document</a>.</p>
+<p>In case you have already deleted Eclipse or didn&#39;t bother to open it, here is the RGB color of each log levels:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Verbose:  000000
+Debug: 00007F
+Info: 027F00
+Warn: FF7F00
+Error: FF0000
+Assert: FF0000
+</code></pre></div>
+<h3>Others</h3>
 
-<h3>Proguard &amp; Obfuscation</h3>
+<p>I use the Android studio default <code>Assert</code> color to make it different from <code>Error</code> log level.</p>
 
-<p>You can set up Rhino&#39;s proguard setting by adding this following line into your <code>proguard-android.txt</code> file.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">-keep class org.mozilla.javascript.** { *; }
-</code></pre></div>
-<p>When you run the <code>assembleRelease</code> task, with <code>minifyEnabled true</code> of course, you still can see a lot of warning like these:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class javax.swing.JMenu
-Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class javax.swing.JMenu
-Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class javax.swing.JMenu
-Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class javax.swing.ButtonGroup
-Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class javax.swing.JScrollPane
-Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class java.awt.event.ActionEvent
-Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class java.awt.event.ActionEvent
-Warning: org.mozilla.javascript.tools.shell.JSConsole$1: can&#39;t find referenced class javax.swing.filechooser.FileFilter
-Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can&#39;t find referenced class java.awt.event.WindowAdapter
-Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can&#39;t find referenced class java.awt.event.WindowEvent
-Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can&#39;t find referenced class java.awt.event.WindowEvent
-Warning: org.mozilla.javascript.xml.impl.xmlbeans.LogicalEquality: can&#39;t find referenced class org.apache.xmlbeans.XmlCursor
-Warning: org.mozilla.javascript.xml.impl.xmlbeans.LogicalEquality: can&#39;t find referenced class org.apache.xmlbeans.XmlCursor
-Warning: org.mozilla.javascript.xml.impl.xmlbeans.LogicalEquality: can&#39;t find referenced class org.apache.xmlbeans.XmlCursor
-</code></pre></div>
-<p>Luckily, evan with these warnings, the app runs fine. You can ignore them(that&#39;s what I do), or adding this line inot your <code>proguard-android.txt</code> file.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">-dontwarn org.mozilla.javascript.**
-</code></pre></div>
+<p>I use the Android studio default theme, not <code>Darcular</code>, so the Eclipse logcat style works for me. If you are using the dark <code>Darcular</code> theme, there is already <a href="https://plus.google.com/+CyrilMottier/posts/Q6cZdf57cj7">a good color set</a> for it.</p>
+
+<p>Finnaly, here is the colorful logcat:
+<img src="/images/android-studio-logcat.png" alt="img"></p>
+
   </div>
   
 </div>

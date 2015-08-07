@@ -80,6 +80,10 @@
           
         
       
+        
+          
+        
+      
 
     <a class="sidebar-nav-item" href="/atom.xml">RSS</a>
 
@@ -95,57 +99,102 @@
   
   <div class="post">
     <h1 class="post-title">
-      <a href="/2015/01/19/How-to-increase-Android-studio-memory-limit-in-Mac/">
-        How to increase Android Studio memory limit in Mac
+      <a href="/2015/04/05/Execute-JavaScript-in-Android-without-WebView/">
+        Execute JavaScript in Android without WebView
       </a>
     </h1>
 
-    <span class="post-date">19 Jan 2015</span>
+    <span class="post-date">05 Apr 2015</span>
 
-    <p>The <a href="http://tools.android.com/tech-docs/configuration">technical doc</a> of configuring Android Studio on the Android Tools Project site is out dated. So you can not increase memory limit by configuring the <code>studio.vmoptions</code> file under <code>~/Library/Preferences/AndroidStudio/</code> folder. Actually, in my case, there is no <code>studio.vmoptions</code> or <code>idea.properties</code> file like the doc said.</p>
+    <p>For some reason, I need to execute JavaScript code in an Android project. Because the JavaScript code was running in a background thread(in <code>doInBackground</code> part in an <a href="http://developer.android.com/reference/android/os/AsyncTask.html"><code>AsyncTask</code></a>), I don&#39;t want to use <code>WebView</code>.</p>
 
-<h3>Locate the configuration file</h3>
+<h3>Why not WebView</h3>
 
-<p>If you are using <code>Terminal</code>, run command</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">open -e /Applications/Android\ Studio.app/Contents/bin/studio.vmoptions
+<p>First of all, WebView is heavy. WebView is slow, especially in a large/huge project. Plus, you need to add a lot of WebView related settings to just execute one code snippet. It&#39;s just simply not worth it.</p>
+
+<p>Secondly, WebView is UI related. A WebView should be created in UI thread. Sure, you can create it in UI thread, load JavaScript code in a background thread, then pass the result back to UI thread. It&#39;s workable, but it&#39;s not safe.</p>
+
+<blockquote>
+<p>If you call methods on WebView from any thread other than your app&#39;s UI thread, it can cause unexpected results. [<a href="https://developer.android.com/guide/webapps/migrating.html#Threads">source</a>]</p>
+</blockquote>
+
+<p>Last but not least, WebView is fragmented. After Android 4.4(API level 19), Android is using WebView baseed on <a href="http://www.chromium.org/Home">Chromuim</a>. Although this is toally a good thing, the WebView in Android 4.3 and below suffers the old version. You should code two version of WebView related code to just make it work. A lot of code should be re-write according to <a href="https://developer.android.com/guide/webapps/migrating.html">this article</a>.</p>
+
+<p>Luckily, the good people in Mozilla make a project called <code>Rhino</code>. It is typically embedded into Java applications to provide scripting to end users.</p>
+
+<h3>How to use Rhino</h3>
+
+<p>Rhino is a open source project, you can get the source code using this command:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">git clone https://github.com/mozilla/rhino.git
 </code></pre></div>
-<p>Or, you can also open <code>Applications</code> folder in Finder, press <code>ctrl</code> then click or just right-click on Android Studio, choose <code>Show Package Contents</code>, you can find <code>studio.vmoptions</code> file under <code>Contents/bin</code> folder.</p>
+<p>Or fork their project on <a href="https://github.com/mozilla/rhino">GitHub</a>.</p>
 
-<h3>Config your settings</h3>
+<p>Of course, you don&#39;t have to get the source code. If you want to use it in your Android project. <a href="https://github.com/mozilla/rhino/releases/download/Rhino1_7R5_RELEASE/rhino1_7R5.zip">Download Rhino</a> first, unzip it, put the <code>js.jar</code> file under <code>libs</code> folder. It is very small, so you don&#39;t need to worry your apk file will be ridiculously large because of this one external jar.</p>
 
-<p>You can just edit your <code>studio.vmoptions</code> file, increasing your <code>Xms</code> and <code>Xmx</code>.</p>
+<p>Here is some simple code to execute JavaScript code.</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">Object</span><span class="o">[]</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[]</span> <span class="o">{</span> <span class="s">&quot;javaScriptParam&quot;</span> <span class="o">};</span>
 
-<p><code>Xmx</code> specifies the maximum memory allocation pool for a Java Virtual Machine (JVM), while <code>Xms</code> specifies the initial memory allocation pool. Your JVM will be started with Xms amount of memory and will be able to use a maximum of Xmx amount of memory.</p>
+<span class="c1">// Every Rhino VM begins with the enter()</span>
+<span class="c1">// This Context is not Android&#39;s Context</span>
+<span class="n">Context</span> <span class="n">rhino</span> <span class="o">=</span> <span class="n">Context</span><span class="o">.</span><span class="na">enter</span><span class="o">();</span>
 
-<p>This is my configuration:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">-Xms128m
--Xmx4096m
--XX:MaxPermSize=1024m
--XX:ReservedCodeCacheSize=200m
--XX:+UseCompressedOops
+<span class="c1">// Turn off optimization to make Rhino Android compatible</span>
+<span class="n">rhino</span><span class="o">.</span><span class="na">setOptimizationLevel</span><span class="o">(-</span><span class="mi">1</span><span class="o">);</span>
+<span class="k">try</span> <span class="o">{</span>
+    <span class="n">Scriptable</span> <span class="n">scope</span> <span class="o">=</span> <span class="n">rhino</span><span class="o">.</span><span class="na">initStandardObjects</span><span class="o">();</span>
+
+    <span class="c1">// Note the forth argument is 1, which means the JavaScript source has</span>
+    <span class="c1">// been compressed to only one line using something like YUI</span>
+    <span class="n">rhino</span><span class="o">.</span><span class="na">evaluateString</span><span class="o">(</span><span class="n">scope</span><span class="o">,</span> <span class="n">javaScriptCode</span><span class="o">,</span> <span class="s">&quot;JavaScript&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+
+    <span class="c1">// Get the functionName defined in JavaScriptCode</span>
+    <span class="n">Object</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">scope</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">functionNameInJavaScriptCode</span><span class="o">,</span> <span class="n">scope</span><span class="o">);</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">obj</span> <span class="k">instanceof</span> <span class="n">Function</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Function</span> <span class="n">jsFunction</span> <span class="o">=</span> <span class="o">(</span><span class="n">Function</span><span class="o">)</span> <span class="n">obj</span><span class="o">;</span>
+
+        <span class="c1">// Call the function with params</span>
+        <span class="n">Object</span> <span class="n">jsResult</span> <span class="o">=</span> <span class="n">jsFunction</span><span class="o">.</span><span class="na">call</span><span class="o">(</span><span class="n">rhino</span><span class="o">,</span> <span class="n">scope</span><span class="o">,</span> <span class="n">scope</span><span class="o">,</span> <span class="n">params</span><span class="o">);</span>
+        <span class="c1">// Parse the jsResult object to a String</span>
+        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">Context</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">jsResult</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+    <span class="n">Context</span><span class="o">.</span><span class="na">exit</span><span class="o">();</span>
+<span class="o">}</span>
 </code></pre></div>
-<p>Once you make the changes, don&#39;t forget to <strong>RESTART</strong> Android Studio.</p>
+<p>As you can see, it is quite easy. You can dig up more in <a href="https://developer.mozilla.org/en-US/docs/Rhino_documentation">Rhino document</a>.</p>
 
-<h3>Other</h3>
+<h3>Proguard &amp; Obfuscation</h3>
 
-<p>If you want to fall back to default values, here it is:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">-Xms128m
--Xmx750m
--XX:MaxPermSize=350m
--XX:ReservedCodeCacheSize=96m
--XX:+UseCompressedOops
+<p>You can set up Rhino&#39;s proguard setting by adding this following line into your <code>proguard-android.txt</code> file.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">-keep class org.mozilla.javascript.** { *; }
 </code></pre></div>
-<p>Or you can <a href="http://tools.android.com/tech-docs/configuration">download</a> it from the Android Tools Project Site.</p>
-
-<p>I think increasing the memory limit in IntelliJ IDEA is the same, I didn&#39;t check it though.</p>
-
+<p>When you run the <code>assembleRelease</code> task, with <code>minifyEnabled true</code> of course, you still can see a lot of warning like these:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class javax.swing.JMenu
+Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class javax.swing.JMenu
+Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class javax.swing.JMenu
+Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class javax.swing.ButtonGroup
+Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class javax.swing.JScrollPane
+Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class java.awt.event.ActionEvent
+Warning: org.mozilla.javascript.tools.shell.JSConsole: can&#39;t find referenced class java.awt.event.ActionEvent
+Warning: org.mozilla.javascript.tools.shell.JSConsole$1: can&#39;t find referenced class javax.swing.filechooser.FileFilter
+Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can&#39;t find referenced class java.awt.event.WindowAdapter
+Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can&#39;t find referenced class java.awt.event.WindowEvent
+Warning: org.mozilla.javascript.tools.shell.JSConsole$2: can&#39;t find referenced class java.awt.event.WindowEvent
+Warning: org.mozilla.javascript.xml.impl.xmlbeans.LogicalEquality: can&#39;t find referenced class org.apache.xmlbeans.XmlCursor
+Warning: org.mozilla.javascript.xml.impl.xmlbeans.LogicalEquality: can&#39;t find referenced class org.apache.xmlbeans.XmlCursor
+Warning: org.mozilla.javascript.xml.impl.xmlbeans.LogicalEquality: can&#39;t find referenced class org.apache.xmlbeans.XmlCursor
+</code></pre></div>
+<p>Luckily, evan with these warnings, the app runs fine. You can ignore them(that&#39;s what I do), or adding this line inot your <code>proguard-android.txt</code> file.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">-dontwarn org.mozilla.javascript.**
+</code></pre></div>
   </div>
   
 </div>
 
 <div class="pagination">
   
-    <span class="pagination-item older">Older</span>
+    <a class="pagination-item older" href="/page4">Older</a>
   
   
     

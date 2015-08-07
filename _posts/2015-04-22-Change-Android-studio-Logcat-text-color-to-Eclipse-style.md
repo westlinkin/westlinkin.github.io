@@ -3,8 +3,7 @@ layout: post
 title: Change Android studio Logcat text color to Eclipse style
 tags: 
 - Android
-- JavaScript
-- WebView
+- AndroidStudio
 shortUrl: http://goo.gl/N44eHH
 ---
 
