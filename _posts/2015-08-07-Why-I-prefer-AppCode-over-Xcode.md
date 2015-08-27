@@ -25,7 +25,7 @@ You can't use `cmd + delete` to delete a whole line, which is also a common shor
 If you wanna use a certain method in a `NSObject`, which has a word `index` in it, but you can't remenber the whole name of the method, what will you do? Look up the document or source code to get the exact name or the first letter of the method? Because `Xcode` can only auto-complete code from the beginning. For example, if you type in `[Object index`, the IDE won't tell you all the methods related to `index` keyword, it can only tell you the methods started with `index`. This really makes writing code slower.
 
 ##### NO Auto-import
-Why not? Evan `Eclipse` has this feature a long long time ago. I can't stand that when I am writing a method/function, the IDE tells me:" Oh, I can't recognize this. Oh, you can't use that".
+Why not? Even `Eclipse` has this feature a long long time ago. I can't stand that when I am writing a method/function, the IDE tells me:" Oh, I can't recognize this. Oh, you can't use that".
 
 ##### Can you really see the Log?
 The font and line spacing of the Log console is a disaster. The text is bold and line spacing is way too small. So the log just looks like a black block. I can't really distinguish one log from another.

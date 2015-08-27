@@ -4,7 +4,7 @@
  <title>Life of Coding</title>
  <link href="http://lifeOfCoding.com/atom.xml" rel="self"/>
  <link href="http://lifeOfCoding.com/"/>
- <updated>2015-08-07T13:39:46+08:00</updated>
+ <updated>2015-08-27T21:24:09+08:00</updated>
  <id>http://lifeOfCoding.com</id>
  <author>
    <name>Wesley Lin</name>
@@ -39,7 +39,7 @@
 
 &lt;h5&gt;NO Auto-import&lt;/h5&gt;
 
-&lt;p&gt;Why not? Evan &lt;code&gt;Eclipse&lt;/code&gt; has this feature a long long time ago. I can&amp;#39;t stand that when I am writing a method/function, the IDE tells me:&amp;quot; Oh, I can&amp;#39;t recognize this. Oh, you can&amp;#39;t use that&amp;quot;.&lt;/p&gt;
+&lt;p&gt;Why not? Even &lt;code&gt;Eclipse&lt;/code&gt; has this feature a long long time ago. I can&amp;#39;t stand that when I am writing a method/function, the IDE tells me:&amp;quot; Oh, I can&amp;#39;t recognize this. Oh, you can&amp;#39;t use that&amp;quot;.&lt;/p&gt;
 
 &lt;h5&gt;Can you really see the Log?&lt;/h5&gt;
 
